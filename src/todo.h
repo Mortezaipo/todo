@@ -35,9 +35,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 char *home_dir();
 
 //Database
+typedef struct {
+  int id;
+  char *title;
+  char *description;
+  int is_done;
+  int is_important;
+} todo_data;
 sqlite3 *open_db();
 void close_db(sqlite3 *);
 int insert_db(char *, char *, int, int);
+todo_data **select_db(int);
+
 
 //Widgets
 GtkWidget *create_window(char *, int, int, GtkWidget *);

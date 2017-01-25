@@ -22,6 +22,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void todo_window() {
 
   //printf("INSERT: %d\n", insert_db("Sample Data", "Sample Description", 1, 0));
+  todo_data **tdata = select_db(0);
+  //int i = 0;
+  //while(TRUE) {
+  //  if(!*(a+i))
+  //    break;
+  //  else
+  //    printf("%s\n", (*(a+i))->title);
+  //  i++;
+  //}
 
   GtkWidget *add_new_btn = gtk_button_new_with_label("Add New");
   GtkWidget *header = create_headerbar("FernSphex Todo", 1, add_new_btn);

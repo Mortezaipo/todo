@@ -20,7 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "todo.h"
 
 //Database open connection
-sqlite3 *open_db() {
+sqlite3 *
+open_db() {
   sqlite3 *db;
   char *db_file = malloc(strlen(home_dir()) + 19);
   sprintf(db_file, "%s/fernsphex_todo.db", home_dir());
@@ -31,13 +32,15 @@ sqlite3 *open_db() {
 }
 
 //Database close connection
-void close_db(sqlite3 *db) {
+void
+close_db(sqlite3 *db) {
   if(db != NULL)
     sqlite3_close(db);
 }
 
 //Add new data
-int insert_db(char *title, char *description, int is_done, int is_important) {
+int
+insert_db(char *title, char *description, int is_done, int is_important) {
   sqlite3 *db = open_db();
   sqlite3_stmt *res;
   int inserted_id = -1;
@@ -78,4 +81,77 @@ int insert_db(char *title, char *description, int is_done, int is_important) {
   inserted_id = sqlite3_last_insert_rowid(db);
   close_db(db);
   return inserted_id;
+}
+
+static int
+select_callback(void *count, int argc, char **argv, char **col_name) {
+  int *c = count;
+  *c = atoi(argv[0]);
+  return 0;
+}
+
+todo_data  **
+select_db(int id) {
+  sqlite3 *db = open_db();
+  sqlite3_stmt *stmt = NULL;
+  todo_data **db_rows = NULL;
+  int pq;
+  int rows_count = 0;
+  char *sql_query = NULL;
+  if (db == NULL) {
+    return NULL;
+  }
+
+  if(id != 0) {
+    sql_query = malloc((sizeof(char) * 28) + sizeof(id));
+    sprintf(sql_query, "SELECT * FROM todo WHERE id=%d;", id);
+    db_rows = malloc(sizeof(todo_data *) + 1);
+  } else {
+    sql_query = malloc(sizeof(char) * 18);
+    sql_query = "SELECT * FROM todo;";
+    if(sqlite3_exec(db, "SELECT COUNT(*) FROM todo;", select_callback, &rows_count, NULL) != SQLITE_OK) {
+      close_db(db);
+      return NULL;
+    }
+    db_rows = malloc(sizeof(todo_data *) * (rows_count + 1));
+  }
+
+  if(sqlite3_prepare_v2(db, sql_query, -1, &stmt, NULL) != SQLITE_OK) {
+    close_db(db);
+    return NULL;
+  }
+
+  int row_index = 0;
+  pq = sqlite3_step(stmt);
+  while(pq != SQLITE_DONE && pq != SQLITE_OK) {
+
+    *(db_rows + row_index) = malloc(sizeof(todo_data));
+
+    const unsigned int id = sqlite3_column_int(stmt, 0);
+    (*(db_rows + row_index))->id = id;
+
+    const unsigned char *title = sqlite3_column_text(stmt, 1);
+    if(title != NULL) {
+      (*(db_rows + row_index))->title = malloc(sizeof(char *) * ((int)strlen(title)+1));
+      strncpy((*(db_rows + row_index))->title, title, (int)strlen(title)+1);
+    }
+    const unsigned char *description = sqlite3_column_text(stmt, 2);
+    if(description != NULL) {
+      (*(db_rows + row_index))->description = malloc(sizeof(char *) * ((int)strlen(description)+1));
+      strncpy((*(db_rows + row_index))->description, description, (int)strlen(description)+1);
+    }
+    const unsigned int is_done = sqlite3_column_int(stmt, 3);
+    (*(db_rows + row_index))->is_done = is_done;
+
+    const unsigned int is_important = sqlite3_column_int(stmt, 4);
+    (*(db_rows + row_index))->is_important = is_important;
+
+    row_index++;
+    pq = sqlite3_step(stmt);
+  }
+  *(db_rows+row_index) = NULL;
+
+  sqlite3_finalize(stmt);
+  close_db(db);
+  return db_rows;
 }
