@@ -19,14 +19,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //FernSphex Todo Window Form.
 #include "todo.h"
 
-void todo_window() {
+void
+todo_details(GtkWidget *btn, gpointer *user_data) {
+  int todo_id = 0;
+  if(user_data != NULL) {
+    todo_id = *(int *)user_data;
+  }
+  todo_detail_window(todo_id);
+}
 
-  //printf("INSERT: %d\n", insert_db("Sample Data", "Sample Description", 1, 0));
+void
+todo_window() {
   todo_data **tdata = select_db(0);
 
   GtkWidget *add_new_btn = create_button("Add New");
   GtkWidget *header = create_headerbar("FernSphex Todo", 1, add_new_btn);
-  GtkWidget *window = create_window("FernSphex Todo", 500, 400, header);
+  GtkWidget *window = create_window("FernSphex Todo", 500, 400, header, TRUE, TRUE);
+
+  g_signal_connect(G_OBJECT(add_new_btn), "clicked", G_CALLBACK(todo_details), NULL);
 
   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(box), TRUE);
@@ -34,6 +44,7 @@ void todo_window() {
   int i = 0;
   while((*(tdata+i)) != NULL) {
     GtkWidget *btn = create_bigbutton((*(tdata+i))->title, (*(tdata+i))->description);
+    g_signal_connect(G_OBJECT(btn), "clicked", G_CALLBACK(todo_details), &((*(tdata+i))->id));
     gtk_box_pack_start(GTK_BOX(box), btn, TRUE, FALSE, 1);
     i++;
   }
