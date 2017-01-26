@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <gdk/gdk.h>
 #include <stdarg.h>
 #include <string.h>
+// #include <stdbool.h>
 #include <stdlib.h>
 #include <sqlite3.h>
 #include <unistd.h>

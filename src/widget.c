@@ -23,19 +23,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 GtkWidget *
 create_window(char *title, int width, int height, GtkWidget *header) {
   GtkWidget *window;
+  // void *tmp = NULL;
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
   gtk_window_set_title(GTK_WINDOW(window), title);
   gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+
+  g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
   if (header != NULL) {
     gtk_window_set_titlebar(GTK_WINDOW(window), header);
   }
 
-  g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-  return window;
+  // if(enable_scrolling == TRUE) {
+  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+  GtkWidget *scroll_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+  GtkWidget *window_scroll = gtk_scrolled_window_new(NULL, NULL);
+  gtk_container_add(GTK_CONTAINER(window), box);
+  gtk_box_pack_start(GTK_BOX(box), window_scroll, TRUE, TRUE, 1);
+  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+  gtk_container_set_border_width(GTK_CONTAINER(window_scroll), 10);
+  gtk_container_add(GTK_CONTAINER(window_scroll), scroll_box);
+  
+  gtk_widget_show_all(window);
+
+  return scroll_box;
+  // } else {
+  //   gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+  //   tmp = (void *)window;
+  // }
+  // return (GtkWidget *)tmp;
 }
 
 // Create Window Header Bar widget.
