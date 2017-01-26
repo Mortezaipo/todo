@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <gdk/gdk.h>
 #include <stdarg.h>
 #include <string.h>
-// #include <stdbool.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <sqlite3.h>
 #include <unistd.h>
@@ -48,13 +48,16 @@ void close_db(sqlite3 *);
 int insert_db(char *, char *, int, int);
 todo_data **select_db(int);
 
-
 //Widgets
-GtkWidget *create_window(char *, int, int, GtkWidget *);
+GtkWidget *create_window(char *, int, int, GtkWidget *, bool, bool);
 GtkWidget *create_headerbar(char *, int, ...);
 GtkWidget *create_bigbutton(char *, char *);
 GtkWidget *create_button(char *);
+GtkWidget *create_input(char *, char *, bool, int);
+GtkWidget *create_switchbox(bool);
+GtkWidget *create_label(char *text);
 
 //Windows
 void todo_window();
+void todo_detail_window(int);
 #endif

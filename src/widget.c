@@ -21,39 +21,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Create Window form.
 GtkWidget *
-create_window(char *title, int width, int height, GtkWidget *header) {
+create_window(char *title, int width, int height, GtkWidget *header, bool enable_scrolling, bool is_parent) {
   GtkWidget *window;
-  // void *tmp = NULL;
+  void *tmp = NULL;
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
   gtk_window_set_title(GTK_WINDOW(window), title);
   gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 
-  g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  if (is_parent == TRUE) {
+    gtk_window_set_default_icon_from_file("todo.png", NULL);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  } else {
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_widget_destroy), NULL);
+  }
 
   if (header != NULL) {
     gtk_window_set_titlebar(GTK_WINDOW(window), header);
   }
 
-  // if(enable_scrolling == TRUE) {
-  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
-  GtkWidget *scroll_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
-  GtkWidget *window_scroll = gtk_scrolled_window_new(NULL, NULL);
-  gtk_container_add(GTK_CONTAINER(window), box);
-  gtk_box_pack_start(GTK_BOX(box), window_scroll, TRUE, TRUE, 1);
-  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
-  gtk_container_set_border_width(GTK_CONTAINER(window_scroll), 10);
-  gtk_container_add(GTK_CONTAINER(window_scroll), scroll_box);
-  
+  if(enable_scrolling == TRUE) {
+    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    GtkWidget *scroll_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    GtkWidget *window_scroll = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_add(GTK_CONTAINER(window), box);
+    gtk_box_pack_start(GTK_BOX(box), window_scroll, TRUE, TRUE, 1);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+    gtk_container_set_border_width(GTK_CONTAINER(window_scroll), 10);
+    gtk_container_add(GTK_CONTAINER(window_scroll), scroll_box);
+    tmp = (void *)scroll_box;
+  } else {
+    gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+    tmp = (void *)window;
+  }
   gtk_widget_show_all(window);
-
-  return scroll_box;
-  // } else {
-  //   gtk_container_set_border_width(GTK_CONTAINER(window), 10);
-  //   tmp = (void *)window;
-  // }
-  // return (GtkWidget *)tmp;
+  return (GtkWidget *)tmp;
 }
 
 // Create Window Header Bar widget.
@@ -107,4 +110,57 @@ create_bigbutton(char *title, char *description) {
   gtk_container_add(GTK_CONTAINER(btn), box);
 
   return btn;
+}
+
+// Create Input widget.
+GtkWidget *
+create_input(char *placeholder, char *value, bool is_multiline, int max_length) {
+  GtkWidget *entry;
+  if(is_multiline == FALSE) {
+    //Single line input
+    entry = gtk_entry_new();
+    gtk_entry_set_max_length(GTK_ENTRY(entry), max_length);
+    if(placeholder != NULL)
+      gtk_entry_set_placeholder_text(GTK_ENTRY(entry), placeholder);
+    if(value != NULL)
+      gtk_entry_set_text(GTK_ENTRY(entry), value);
+  } else {
+    //Multi line input
+    entry = gtk_text_view_new();
+
+    gtk_widget_set_size_request(entry, 450, 300);
+    gtk_text_view_set_border_window_size(GTK_TEXT_VIEW(entry), GTK_TEXT_WINDOW_LEFT, 1);
+    gtk_text_view_set_border_window_size(GTK_TEXT_VIEW(entry), GTK_TEXT_WINDOW_RIGHT, 1);
+    gtk_text_view_set_border_window_size(GTK_TEXT_VIEW(entry), GTK_TEXT_WINDOW_TOP, 1);
+    gtk_text_view_set_border_window_size(GTK_TEXT_VIEW(entry), GTK_TEXT_WINDOW_BOTTOM, 1);
+
+    gtk_text_view_set_accepts_tab(GTK_TEXT_VIEW(entry), TRUE);
+
+    char *default_value = (value!=NULL)?value:placeholder;
+    if (default_value != NULL) {
+      GtkTextBuffer *bd = gtk_text_buffer_new(NULL);
+      gtk_text_buffer_set_text(bd, default_value, strlen(default_value));
+      gtk_text_view_set_buffer(GTK_TEXT_VIEW(entry), bd);
+    }
+  }
+
+  return entry;
+}
+
+// Create Checkbox widget.
+GtkWidget *
+create_switchbox(bool is_active) {
+  GtkWidget *switchbox;
+  switchbox = gtk_switch_new();
+  if(is_active == TRUE)
+    gtk_switch_set_active(GTK_SWITCH(switchbox), TRUE);
+  return switchbox;
+}
+
+// Create Label widget.
+GtkWidget *
+create_label(char *text) {
+  GtkWidget *label;
+  label = gtk_label_new(text);
+  return label;
 }
