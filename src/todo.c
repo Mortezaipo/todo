@@ -24,7 +24,7 @@ void todo_window() {
   //printf("INSERT: %d\n", insert_db("Sample Data", "Sample Description", 1, 0));
   todo_data **tdata = select_db(0);
 
-  GtkWidget *add_new_btn = gtk_button_new_with_label("Add New");
+  GtkWidget *add_new_btn = create_button("Add New");
   GtkWidget *header = create_headerbar("FernSphex Todo", 1, add_new_btn);
   GtkWidget *window = create_window("FernSphex Todo", 500, 400, header);
 
