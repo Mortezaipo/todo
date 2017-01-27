@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "todo.h"
 
 void
-todo_details(GtkWidget *btn, gpointer *user_data) {
+todo_details(GtkWidget *btn, gpointer user_data) {
   int todo_id = 0;
   if(user_data != NULL) {
     todo_id = *(int *)user_data;
