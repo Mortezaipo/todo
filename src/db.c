@@ -157,3 +157,34 @@ select_db(int id) {
   close_db(db);
   return db_rows;
 }
+
+// Delete a todo
+bool
+delete_db(int todo_id) {
+  if(todo_id <= 0)
+    return FALSE;
+
+  sqlite3 *db = open_db();
+  sqlite3_stmt *stmt;
+
+  char *sql_query = "DELETE FROM todo WHERE id=?";
+  if(sqlite3_prepare_v2(db, sql_query, -1, &stmt, NULL) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+
+  if(sqlite3_bind_int(stmt, 1, todo_id) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+
+  if(sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "ERROR ON DELETE! %s", sqlite3_errmsg(db));
+    close_db(db);
+    return FALSE;
+  }
+
+  sqlite3_finalize(stmt);
+  close_db(db);
+  return TRUE;
+}
