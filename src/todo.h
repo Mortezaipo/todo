@@ -47,6 +47,7 @@ sqlite3 *open_db();
 void close_db(sqlite3 *);
 int insert_db(char *, char *, int, int);
 todo_data **select_db(int);
+bool delete_db(int);
 
 //Widgets
 GtkWidget *create_window(char *, int, int, GtkWidget *, bool, bool);
@@ -59,5 +60,5 @@ GtkWidget *create_label(char *text);
 
 //Windows
 void todo_window();
-void todo_detail_window(int);
+void todo_details_window(int *);
 #endif

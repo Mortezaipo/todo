@@ -20,9 +20,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "todo.h"
 
-void todo_detail_window(int todo_id) {
+void
+delete_todo(GtkWidget *btn, gpointer user_data) {
+  int todo_id = 0;
+  if(user_data != NULL)
+    todo_id = *(int *)user_data;
+  delete_db(todo_id);
+}
+
+void todo_details_window(int *todo_id) {
   GtkWidget *save_btn = create_button("Save");
-  GtkWidget *header = create_headerbar("New Todo", 1, save_btn);
+  GtkWidget *header;
+  char *window_title = (todo_id == 0)?"New Todo":"Edit Todo";
+  if(todo_id == 0) {
+    header = create_headerbar(window_title, 1, save_btn);
+  } else {
+    GtkWidget *delete_btn = create_button("Delete");
+    header = create_headerbar(window_title, 2, save_btn, delete_btn);
+    g_signal_connect(delete_btn, "clicked", G_CALLBACK(delete_todo), todo_id);
+  }
+
   GtkWidget *window = create_window("New Todo", 500, 430, header, FALSE, FALSE);
 
   char *title_data = NULL;
@@ -31,7 +48,7 @@ void todo_detail_window(int todo_id) {
   bool is_important_data = FALSE;
   // Look for data in database
   if(todo_id != 0) {
-    todo_data **db_row = select_db(todo_id);
+    todo_data **db_row = select_db(*todo_id);
     if(*db_row != NULL) {
       title_data = (*(db_row))->title;
       description_data = (*(db_row))->description;
@@ -49,14 +66,16 @@ void todo_detail_window(int todo_id) {
   GtkWidget *is_done = create_switchbox(is_done_data);
   GtkWidget *is_important = create_switchbox(is_important_data);
 
+  gtk_label_set_xalign(GTK_LABEL(is_done_lbl), 0);
   GtkWidget *is_done_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(is_done_box), FALSE);
-  gtk_box_pack_start(GTK_BOX(is_done_box), is_done_lbl, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(is_done_box), is_done_lbl, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(is_done_box), is_done, FALSE, FALSE, 1);
 
+  gtk_label_set_xalign(GTK_LABEL(is_important_lbl), 0);
   GtkWidget *is_important_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(is_important_box), FALSE);
-  gtk_box_pack_start(GTK_BOX(is_important_box), is_important_lbl, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(is_important_box), is_important_lbl, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(is_important_box), is_important, FALSE, FALSE, 1);
 
   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);

@@ -21,11 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void
 todo_details(GtkWidget *btn, gpointer user_data) {
-  int todo_id = 0;
-  if(user_data != NULL) {
-    todo_id = *(int *)user_data;
-  }
-  todo_detail_window(todo_id);
+  todo_details_window((int *)user_data);
 }
 
 void
