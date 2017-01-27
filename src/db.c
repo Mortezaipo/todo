@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //FernSphex Todo Database Library.
 #include "todo.h"
 
-//Database open connection
+// Database open connection
 sqlite3 *
 open_db() {
   sqlite3 *db;
@@ -31,14 +31,14 @@ open_db() {
   return db;
 }
 
-//Database close connection
+// Database close connection
 void
 close_db(sqlite3 *db) {
   if(db != NULL)
     sqlite3_close(db);
 }
 
-//Add new data
+// Add new data
 int
 insert_db(char *title, char *description, int is_done, int is_important) {
   sqlite3 *db = open_db();
@@ -83,13 +83,15 @@ insert_db(char *title, char *description, int is_done, int is_important) {
   return inserted_id;
 }
 
+// Select query callback.
 static int
-select_callback(void *count, int argc, char **argv, char **col_name) {
+select_db_callback(void *count, int argc, char **argv, char **col_name) {
   int *c = count;
   *c = atoi(argv[0]);
   return 0;
 }
 
+// Fetch data
 todo_data  **
 select_db(int id) {
   sqlite3 *db = open_db();
@@ -109,7 +111,7 @@ select_db(int id) {
   } else {
     sql_query = malloc(sizeof(char) * 18);
     sql_query = "SELECT * FROM todo;";
-    if(sqlite3_exec(db, "SELECT COUNT(*) FROM todo;", select_callback, &rows_count, NULL) != SQLITE_OK) {
+    if(sqlite3_exec(db, "SELECT COUNT(*) FROM todo;", select_db_callback, &rows_count, NULL) != SQLITE_OK) {
       close_db(db);
       return NULL;
     }
