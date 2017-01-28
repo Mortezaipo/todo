@@ -50,6 +50,12 @@ todo_data **select_db(int);
 bool delete_db(int);
 
 //Widgets
+typedef struct {
+  GtkWidget *btn;
+  GtkWidget *box;
+  int id;
+  char action[10]; //new, edit, delete
+} signal_data;
 GtkWidget *create_window(char *, int, int, GtkWidget *, bool, bool);
 GtkWidget *create_headerbar(char *, int, ...);
 GtkWidget *create_bigbutton(char *, char *);
@@ -60,5 +66,5 @@ GtkWidget *create_label(char *text);
 
 //Windows
 void todo_window();
-void todo_details_window(int *);
+void todo_details_window(signal_data *);
 #endif

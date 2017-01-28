@@ -20,8 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "todo.h"
 
 void
-todo_details(GtkWidget *btn, gpointer user_data) {
-  todo_details_window((int *)user_data);
+todo_details(GtkWidget *btn, gpointer sd) {
+  //printf("%d\n", ((signal_data *)sd)->id);
+  todo_details_window((signal_data *)sd);
 }
 
 void
@@ -37,11 +38,18 @@ todo_window() {
   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(box), TRUE);
 
+  signal_data *sd;
   int i = 0;
   while((*(tdata+i)) != NULL) {
     GtkWidget *btn = create_bigbutton((*(tdata+i))->title, (*(tdata+i))->description);
-    g_signal_connect(G_OBJECT(btn), "clicked", G_CALLBACK(todo_details), &((*(tdata+i))->id));
+    sd = malloc(sizeof(signal_data));
+    sd->btn = btn;
+    sd->box = box;
+    sd->id = ((*(tdata+i))->id);
+    strcpy(sd->action, "edit");
+    g_signal_connect(G_OBJECT(btn), "clicked", G_CALLBACK(todo_details), sd);
     gtk_box_pack_start(GTK_BOX(box), btn, TRUE, FALSE, 1);
+    //free(sd);
     i++;
   }
 

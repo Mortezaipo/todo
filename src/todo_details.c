@@ -21,23 +21,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "todo.h"
 
 void
-delete_todo(GtkWidget *btn, gpointer user_data) {
-  int todo_id = 0;
-  if(user_data != NULL)
-    todo_id = *(int *)user_data;
-  delete_db(todo_id);
+delete_todo(GtkWidget *btn, gpointer sd) {
+  if (delete_db(((signal_data *)sd)->id) == TRUE) {
+    gtk_widget_destroy(((signal_data *)sd)->btn);
+    gtk_widget_show_all(((signal_data *)sd)->box);
+  }
 }
 
-void todo_details_window(int *todo_id) {
+void todo_details_window(signal_data *sd) {
   GtkWidget *save_btn = create_button("Save");
   GtkWidget *header;
-  char *window_title = (todo_id == 0)?"New Todo":"Edit Todo";
-  if(todo_id == 0) {
+  char *window_title = (sd == NULL)?"New Todo":"Edit Todo";
+  if(sd == NULL) {
     header = create_headerbar(window_title, 1, save_btn);
   } else {
     GtkWidget *delete_btn = create_button("Delete");
     header = create_headerbar(window_title, 2, save_btn, delete_btn);
-    g_signal_connect(delete_btn, "clicked", G_CALLBACK(delete_todo), todo_id);
+    g_signal_connect(delete_btn, "clicked", G_CALLBACK(delete_todo), sd);
   }
 
   GtkWidget *window = create_window("New Todo", 500, 430, header, FALSE, FALSE);
@@ -47,8 +47,8 @@ void todo_details_window(int *todo_id) {
   bool is_done_data = FALSE;
   bool is_important_data = FALSE;
   // Look for data in database
-  if(todo_id != 0) {
-    todo_data **db_row = select_db(*todo_id);
+  if(sd != NULL) {
+    todo_data **db_row = select_db(sd->id);
     if(*db_row != NULL) {
       title_data = (*(db_row))->title;
       description_data = (*(db_row))->description;
