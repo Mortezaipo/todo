@@ -17,8 +17,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ============================================================ */
 // New Todo Window
-
 #include "todo.h"
+
+void
+save_todo(GtkWidget *btn, gpointer data) {
+  printf("ID: %d\n", 10);
+}
 
 void
 delete_todo(GtkWidget *btn, gpointer sd) {
@@ -59,6 +63,7 @@ void todo_details_window(signal_data *sd) {
 
   GtkWidget *title = create_input("Todo Title", title_data, FALSE, 50);
   GtkWidget *description = create_input("Todo Description", description_data, TRUE, 1000);
+  //GtkWidget *input_description = gtk_text_view_get_buffer(description);
 
   // Switches for is_done & is_important items.
   GtkWidget *is_done_lbl = create_label("Is todo done?");
@@ -83,6 +88,14 @@ void todo_details_window(signal_data *sd) {
   gtk_box_pack_start(GTK_BOX(box), description, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(box), is_done_box, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(box), is_important_box, TRUE, TRUE, 1);
+
+  todo_data *input_data = malloc(sizeof(todo_data));
+  input_data->id = sd->id;
+  // input_data->title = gtk_entry_get_text(title);
+  //input_data->description = gtk_text_buffer_get_text(description_input);
+  input_data->is_done = gtk_switch_get_active(GTK_SWITCH(is_done));
+  input_data->is_important = gtk_switch_get_active(GTK_SWITCH(is_important));
+  g_signal_connect(save_btn, "clicked", G_CALLBACK(save_todo), input_data);
 
   gtk_container_add(GTK_CONTAINER(window), box);
   gtk_widget_show_all(window);
