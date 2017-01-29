@@ -34,3 +34,4 @@
 
 # Compiled files
 bin/fernsphex-todo
+tests/test
