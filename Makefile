@@ -13,7 +13,7 @@ debug:
 	gcc -g $(SRC_FILES) $(CFLAGS) $(LDFLAGS) -o bin/fernsphex-todo
 
 clean:
-	-rm -f bin/fernsphex-todo
+	-rm -f bin/fernsphex-todo tests/test
 
 test:
 	gcc -g $(TEST_FILES) tests/*.c $(CFLAGS) $(LDFLAGS) -o tests/test
