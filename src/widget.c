@@ -79,15 +79,16 @@ create_headerbar(char *title, int items_count, ...) {
 
 // Create simple Button widget which has just title.
 GtkWidget *
-create_button(char *title) {
+create_button(char *title, char *name) {
   GtkWidget *btn;
   btn = gtk_button_new_with_label(title);
+  gtk_widget_set_name(btn, name);
   return btn;
 }
 
 // Create big Button widget which has title & description.
 GtkWidget *
-create_bigbutton(char *title, char *description) {
+create_bigbutton(char *title, char *description, char *name) {
   GtkWidget *btn;
   GtkWidget *title_lbl;
   GtkWidget *description_lbl;
@@ -100,6 +101,8 @@ create_bigbutton(char *title, char *description) {
   title_lbl = gtk_label_new(NULL);
   description_lbl = gtk_label_new(description);
   box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 1);
+
+  gtk_widget_set_name(btn, name);
 
   gtk_label_set_markup(GTK_LABEL(title_lbl), markup_title);
   gtk_label_set_xalign(GTK_LABEL(title_lbl), 0);
@@ -114,7 +117,7 @@ create_bigbutton(char *title, char *description) {
 
 // Create Input widget.
 GtkWidget *
-create_input(char *placeholder, char *value, bool is_multiline, int max_length) {
+create_input(char *placeholder, char *value, bool is_multiline, int max_length, char *name) {
   GtkWidget *entry;
   if(is_multiline == FALSE) {
     //Single line input
@@ -143,7 +146,7 @@ create_input(char *placeholder, char *value, bool is_multiline, int max_length) 
       gtk_text_view_set_buffer(GTK_TEXT_VIEW(entry), bd);
     }
   }
-
+  gtk_widget_set_name(entry, name);
   return entry;
 }
 
@@ -167,7 +170,7 @@ create_label(char *text) {
 
 // Create Alert widget.
 GtkWidget *
-create_alert(char *title, char *description) {
+create_alert(char *title, char *description, char *name) {
   GtkWidget *t_label = gtk_label_new(NULL);
   char *tmp_text = malloc((sizeof(char) * strlen(title)) + 18);
   sprintf(tmp_text, "<big><b>%s</b></big>", title);
@@ -178,7 +181,10 @@ create_alert(char *title, char *description) {
   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_pack_start(GTK_BOX(box), t_label, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(box), d_label, TRUE, TRUE, 1);
+  gtk_widget_set_name(box, name);
+
   gtk_widget_show_all(box);
+
   free(tmp_text);
   return box;
 }
@@ -220,4 +226,12 @@ get_switch_value(GtkWidget *switchbox) {
   if(gtk_switch_get_active(GTK_SWITCH(switchbox)) == TRUE)
     return 1;
   return 0;
+}
+
+// Show no-todo-alert box
+void show_no_todo_alert() {
+  no_todo_alert = create_alert("No Todo Found.", \
+                               "Click on 'Add New' button on your top-left side.", \
+                               "alert_normal");
+  gtk_box_pack_start(GTK_BOX(main_window_box), no_todo_alert, TRUE, FALSE, 1);
 }

@@ -36,16 +36,24 @@ save_todo(GtkWidget *save_btn, gpointer data) {
                        get_switch_value(tmp_data->is_done), \
                        get_switch_value(tmp_data->is_important));
 
-    sd->btn = create_bigbutton(get_entry_text(tmp_data->title, FALSE), \
-                               get_entry_text(tmp_data->description, TRUE));
+    if (sd->id > 0) {
+      sd->btn = create_bigbutton(get_entry_text(tmp_data->title, FALSE), \
+                                 get_entry_text(tmp_data->description, TRUE), \
+                                 "todo_item");
 
-    g_signal_connect(G_OBJECT(sd->btn), "clicked", G_CALLBACK(todo_details), sd);
+      g_signal_connect(G_OBJECT(sd->btn), "clicked", G_CALLBACK(todo_details), sd);
 
-    gtk_box_pack_start(GTK_BOX(sd->box), sd->btn, FALSE, TRUE, 1);
-    gtk_widget_show_all(sd->box);
-    GtkWidget *window = gtk_widget_get_toplevel(save_btn);
-    if(gtk_widget_is_toplevel(window)) {
-      gtk_widget_destroy(window);
+      gtk_box_pack_start(GTK_BOX(sd->box), sd->btn, FALSE, TRUE, 1);
+      gtk_widget_show_all(sd->box);
+
+      if(no_todo_alert != NULL) {
+        gtk_widget_destroy(no_todo_alert);
+      }
+
+      GtkWidget *window = gtk_widget_get_toplevel(save_btn);
+      if(gtk_widget_is_toplevel(window)) {
+        gtk_widget_destroy(window);
+      }
     }
     free(tmp_data);
   }
@@ -63,13 +71,13 @@ delete_todo(GtkWidget *btn, gpointer sd) {
 }
 
 void todo_details_window(signal_data *sd) {
-  GtkWidget *save_btn = create_button("Save");
+  GtkWidget *save_btn = create_button("Save", "button_success");
   GtkWidget *header;
   char *window_title = (sd->id == 0)?"New Todo":"Edit Todo";
   if(sd->id == 0) {
     header = create_headerbar(window_title, 1, save_btn);
   } else {
-    GtkWidget *delete_btn = create_button("Delete");
+    GtkWidget *delete_btn = create_button("Delete", "button_danger");
     header = create_headerbar(window_title, 2, save_btn, delete_btn);
     g_signal_connect(delete_btn, "clicked", G_CALLBACK(delete_todo), sd);
   }
@@ -92,8 +100,8 @@ void todo_details_window(signal_data *sd) {
     }
   }
 
-  GtkWidget *title = create_input("Todo Title", title_data, FALSE, 50);
-  GtkWidget *description = create_input("Todo Description", description_data, TRUE, 1000);
+  GtkWidget *title = create_input("Todo Title", title_data, FALSE, 50, "text_normal");
+  GtkWidget *description = create_input("Todo Description", description_data, TRUE, 1000, "textarea_normal");
 
   // Switches for is_done & is_important items.
   GtkWidget *is_done_lbl = create_label("Is todo done?");

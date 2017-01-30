@@ -50,6 +50,8 @@ todo_data **select_db(int);
 bool delete_db(int);
 
 //Widgets
+static GtkWidget *no_todo_alert = NULL;
+static GtkWidget *main_window_box = NULL;
 typedef struct {
   GtkWidget *btn;
   GtkWidget *box;
@@ -66,14 +68,15 @@ typedef struct {
 } todo_items;
 GtkWidget *create_window(char *, int, int, GtkWidget *, bool, bool);
 GtkWidget *create_headerbar(char *, int, ...);
-GtkWidget *create_bigbutton(char *, char *);
-GtkWidget *create_button(char *);
-GtkWidget *create_input(char *, char *, bool, int);
+GtkWidget *create_bigbutton(char *, char *, char *);
+GtkWidget *create_button(char *, char *);
+GtkWidget *create_input(char *, char *, bool, int, char *);
 GtkWidget *create_switchbox(bool);
 GtkWidget *create_label(char *text);
-GtkWidget *create_alert(char *, char *);
+GtkWidget *create_alert(char *, char *, char *);
 char *get_entry_text(GtkWidget *, bool);
 int get_switch_value(GtkWidget *);
+void show_no_todo_alert();
 
 //Windows
 void todo_window();
