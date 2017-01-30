@@ -47,7 +47,7 @@ create_window(char *title, int width, int height, GtkWidget *header, bool enable
     GtkWidget *window_scroll = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(window), box);
     gtk_box_pack_start(GTK_BOX(box), window_scroll, TRUE, TRUE, 1);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_container_set_border_width(GTK_CONTAINER(window_scroll), 10);
     gtk_container_add(GTK_CONTAINER(window_scroll), scroll_box);
     tmp = (void *)scroll_box;
@@ -165,6 +165,23 @@ create_label(char *text) {
   return label;
 }
 
+// Create Alert widget.
+GtkWidget *
+create_alert(char *title, char *description) {
+  GtkWidget *t_label = gtk_label_new(NULL);
+  char *tmp_text = malloc((sizeof(char) * strlen(title)) + 18);
+  sprintf(tmp_text, "<big><b>%s</b></big>", title);
+  gtk_label_set_markup(GTK_LABEL(t_label), tmp_text);
+
+  GtkWidget *d_label = gtk_label_new(description);
+
+  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+  gtk_box_pack_start(GTK_BOX(box), t_label, TRUE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(box), d_label, TRUE, TRUE, 1);
+  gtk_widget_show_all(box);
+  free(tmp_text);
+  return box;
+}
 
 // Get Entry text.
 char *

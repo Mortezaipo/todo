@@ -21,11 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void
 todo_details(GtkWidget *btn, gpointer sd) {
-  //printf("%d\n", ((signal_data *)sd)->id);
-  if (sd != NULL)
     todo_details_window((signal_data *)sd);
-  else
-    todo_details_window(NULL);
 }
 
 void
@@ -36,13 +32,22 @@ todo_window() {
   GtkWidget *header = create_headerbar("FernSphex Todo", 1, add_new_btn);
   GtkWidget *window = create_window("FernSphex Todo", 500, 400, header, TRUE, TRUE);
 
-  g_signal_connect(G_OBJECT(add_new_btn), "clicked", G_CALLBACK(todo_details), NULL);
-
   GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(box), TRUE);
 
+  signal_data *sdn = malloc(sizeof(signal_data));
+  sdn->btn = add_new_btn;
+  sdn->box = box;
+  sdn->id = 0;
+  strcpy(sdn->action, "new");
+  g_signal_connect(G_OBJECT(add_new_btn), "clicked", G_CALLBACK(todo_details), sdn);
+
   signal_data *sd;
   int i = 0;
+  if(*tdata == NULL) {
+    GtkWidget *alert = create_alert("No Todo Found.", "Click on 'Add New' button on your top-left side.");
+    gtk_box_pack_start(GTK_BOX(box), alert, TRUE, FALSE, 1);
+  }
   while((*(tdata+i)) != NULL) {
     GtkWidget *btn = create_bigbutton((*(tdata+i))->title, (*(tdata+i))->description);
     sd = malloc(sizeof(signal_data));

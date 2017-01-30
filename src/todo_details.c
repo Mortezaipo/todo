@@ -20,23 +20,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "todo.h"
 
 void
-save_todo(GtkWidget *btn, gpointer data) {
+save_todo(GtkWidget *save_btn, gpointer data) {
   todo_items *tmp_data = (todo_items *)data;
   if (tmp_data->id > 0) {
     //Update action // FIXME: not implemented
     printf("update\n");
   } else {
     //Save action
-    insert_db(get_entry_text(tmp_data->title, FALSE), \
-              get_entry_text(tmp_data->description, TRUE), \
-              get_switch_value(tmp_data->is_done), \
-              get_switch_value(tmp_data->is_important));
-    // FIXME: not implemented ( create buttons )
-    // GtkWidget *btn = create_bigbutton(tmp_data->title, tmp_data->description);
-    // gtk_box_pack_start(GTK_BOX(tmp_data->parent->box), btn);
-    // gtk_widget_show_all(tmp_data->parent->box);
+    signal_data *sd = malloc(sizeof(signal_data));
+    sd->box = tmp_data->refresh_box;
+    strcpy(sd->action, "edit");
+
+    sd->id = insert_db(get_entry_text(tmp_data->title, FALSE), \
+                       get_entry_text(tmp_data->description, TRUE), \
+                       get_switch_value(tmp_data->is_done), \
+                       get_switch_value(tmp_data->is_important));
+
+    sd->btn = create_bigbutton(get_entry_text(tmp_data->title, FALSE), \
+                               get_entry_text(tmp_data->description, TRUE));
+
+    g_signal_connect(G_OBJECT(sd->btn), "clicked", G_CALLBACK(todo_details), sd);
+
+    gtk_box_pack_start(GTK_BOX(sd->box), sd->btn, FALSE, TRUE, 1);
+    gtk_widget_show_all(sd->box);
+    GtkWidget *window = gtk_widget_get_toplevel(save_btn);
+    if(gtk_widget_is_toplevel(window)) {
+      gtk_widget_destroy(window);
+    }
+    free(tmp_data);
   }
-  // printf("TITLE: %s\n", ((todo_data*)data)->title);
 }
 
 void
@@ -44,14 +56,17 @@ delete_todo(GtkWidget *btn, gpointer sd) {
   if (delete_db(((signal_data *)sd)->id) == TRUE) {
     gtk_widget_destroy(((signal_data *)sd)->btn);
     gtk_widget_show_all(((signal_data *)sd)->box);
+    GtkWidget *window = gtk_widget_get_toplevel(btn);
+    if(gtk_widget_is_toplevel(window))
+      gtk_widget_destroy(window);
   }
 }
 
 void todo_details_window(signal_data *sd) {
   GtkWidget *save_btn = create_button("Save");
   GtkWidget *header;
-  char *window_title = (sd == NULL)?"New Todo":"Edit Todo";
-  if(sd == NULL) {
+  char *window_title = (sd->id == 0)?"New Todo":"Edit Todo";
+  if(sd->id == 0) {
     header = create_headerbar(window_title, 1, save_btn);
   } else {
     GtkWidget *delete_btn = create_button("Delete");
@@ -65,8 +80,9 @@ void todo_details_window(signal_data *sd) {
   char *description_data = NULL;
   bool is_done_data = FALSE;
   bool is_important_data = FALSE;
+
   // Look for data in database
-  if(sd != NULL) {
+  if(sd->id != 0) {
     todo_data **db_row = select_db(sd->id);
     if(*db_row != NULL) {
       title_data = (*(db_row))->title;
@@ -103,18 +119,13 @@ void todo_details_window(signal_data *sd) {
   gtk_box_pack_start(GTK_BOX(box), is_done_box, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(box), is_important_box, TRUE, TRUE, 1);
 
-  // todo_data *input_data = malloc(sizeof(todo_data));
-  // input_data->id = (sd != NULL)?sd->id:0;
-  // input_data->title = get_entry_text(title, FALSE);
-  // input_data->description = get_entry_text(description, TRUE);
-  // input_data->is_done = gtk_switch_get_active(GTK_SWITCH(is_done));
-  // input_data->is_important = gtk_switch_get_active(GTK_SWITCH(is_important));
   todo_items *input_items = malloc(sizeof(todo_items));
-  input_items->id = (sd != NULL)?sd->id:0;
+  input_items->id = (sd->id == 0)?sd->id:0;
   input_items->title = title;
   input_items->description = description;
   input_items->is_done = is_done;
   input_items->is_important = is_important;
+  input_items->refresh_box = sd->box;
 
   g_signal_connect(save_btn, "clicked", G_CALLBACK(save_todo), input_items);
 

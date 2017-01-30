@@ -58,6 +58,7 @@ typedef struct {
 } signal_data;
 typedef struct {
   int id;
+  GtkWidget *refresh_box;
   GtkWidget *title;
   GtkWidget *description;
   GtkWidget *is_done;
@@ -70,10 +71,12 @@ GtkWidget *create_button(char *);
 GtkWidget *create_input(char *, char *, bool, int);
 GtkWidget *create_switchbox(bool);
 GtkWidget *create_label(char *text);
+GtkWidget *create_alert(char *, char *);
 char *get_entry_text(GtkWidget *, bool);
 int get_switch_value(GtkWidget *);
 
 //Windows
 void todo_window();
 void todo_details_window(signal_data *);
+void todo_details(GtkWidget *, gpointer);
 #endif
