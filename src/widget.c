@@ -227,11 +227,3 @@ get_switch_value(GtkWidget *switchbox) {
     return 1;
   return 0;
 }
-
-// Show no-todo-alert box
-void show_no_todo_alert() {
-  no_todo_alert = create_alert("No Todo Found.", \
-                               "Click on 'Add New' button on your top-left side.", \
-                               "alert_normal");
-  gtk_box_pack_start(GTK_BOX(main_window_box), no_todo_alert, TRUE, FALSE, 1);
-}

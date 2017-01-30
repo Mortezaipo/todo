@@ -1,0 +1,40 @@
+#button_success {
+    background-color: #00C64B;
+    color: #FFF;
+}
+#button_success:focus {
+  border:1px solid #00C64B;
+}
+
+#button_info {
+  background-color: #00C6B9;
+  color: #FFF;
+}
+#button_info:focus {
+  border:1px solid #00C6B9;
+}
+
+#button_danger {
+  background-color: #D8495F;
+  color: #FFF;
+}
+#button_danger:focus {
+  border:1px solid #D8495F;
+}
+
+#textarea_normal {
+  border:1px solid #333;
+}
+
+#alert_normal {
+  padding: 10px;
+  border:2px solid #D7D7D7;
+}
+
+#todo_item_is_done {
+  background-color: #E5E5E5;
+  color: #A0A0A0
+}
+#todo_item_is_important {
+  background-color: #CCFF00;
+}

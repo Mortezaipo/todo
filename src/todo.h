@@ -50,8 +50,6 @@ todo_data **select_db(int);
 bool delete_db(int);
 
 //Widgets
-static GtkWidget *no_todo_alert = NULL;
-static GtkWidget *main_window_box = NULL;
 typedef struct {
   GtkWidget *btn;
   GtkWidget *box;

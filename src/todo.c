@@ -32,34 +32,46 @@ todo_window() {
   GtkWidget *header = create_headerbar("FernSphex Todo", 1, add_new_btn);
   GtkWidget *window = create_window("FernSphex Todo", 500, 400, header, TRUE, TRUE);
 
-  main_window_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
-  gtk_box_set_homogeneous(GTK_BOX(main_window_box), TRUE);
+  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+  gtk_box_set_homogeneous(GTK_BOX(box), TRUE);
 
   signal_data *sdn = malloc(sizeof(signal_data));
   sdn->btn = add_new_btn;
-  sdn->box = main_window_box;
+  sdn->box = box;
   sdn->id = 0;
   strcpy(sdn->action, "new");
   g_signal_connect(G_OBJECT(add_new_btn), "clicked", G_CALLBACK(todo_details), sdn);
 
   signal_data *sd;
   int i = 0;
-  if(*tdata == NULL)
-    show_no_todo_alert();
+  if(*tdata == NULL) {
+    GtkWidget *no_todo_alert = create_alert("No Todo Found.", \
+                                            "Click on 'Add New' button on your top-left side.", \
+                                            "alert_normal");
+    gtk_box_pack_start(GTK_BOX(box), no_todo_alert, TRUE, FALSE, 1);
+  }
 
   while((*(tdata+i)) != NULL) {
-    GtkWidget *btn = create_bigbutton((*(tdata+i))->title, (*(tdata+i))->description, "todo_item");
+    char *class = malloc(sizeof(char) * 22);
+    if((*(tdata+i))->is_done == 1)
+      strcpy(class, "todo_item_is_done");
+    else if((*(tdata+i))->is_important == 1)
+      strcpy(class, "todo_item_is_important");
+    else
+      strcpy(class, "todo_item_normal");
+
+    GtkWidget *btn = create_bigbutton((*(tdata+i))->title, (*(tdata+i))->description, class);
     sd = malloc(sizeof(signal_data));
     sd->btn = btn;
-    sd->box = main_window_box;
+    sd->box = box;
     sd->id = ((*(tdata+i))->id);
     strcpy(sd->action, "edit");
     g_signal_connect(G_OBJECT(btn), "clicked", G_CALLBACK(todo_details), sd);
-    gtk_box_pack_start(GTK_BOX(main_window_box), btn, TRUE, FALSE, 1);
-    //free(sd);
+    gtk_box_pack_start(GTK_BOX(box), btn, TRUE, FALSE, 1);
+    free(class);
     i++;
   }
 
-  gtk_container_add(GTK_CONTAINER(window), main_window_box);
+  gtk_container_add(GTK_CONTAINER(window), box);
   gtk_widget_show_all(window);
 }

@@ -46,9 +46,9 @@ save_todo(GtkWidget *save_btn, gpointer data) {
       gtk_box_pack_start(GTK_BOX(sd->box), sd->btn, FALSE, TRUE, 1);
       gtk_widget_show_all(sd->box);
 
-      if(no_todo_alert != NULL) {
-        gtk_widget_destroy(no_todo_alert);
-      }
+      // if(sd->box != NULL) {
+      //   gtk_widget_destroy(no_todo_alert);
+      // }
 
       GtkWidget *window = gtk_widget_get_toplevel(save_btn);
       if(gtk_widget_is_toplevel(window)) {
