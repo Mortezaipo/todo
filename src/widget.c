@@ -164,3 +164,43 @@ create_label(char *text) {
   label = gtk_label_new(text);
   return label;
 }
+
+
+// Get Entry text.
+char *
+get_entry_text(GtkWidget *textbox, bool is_multiline) {
+  // GtkTextIter s, n;
+  // GtkTextBuffer *tb = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textbox));
+  // char *text;
+  // gtk_text_buffer_get_bounds(tb, &s, &n);
+  // text = gtk_text_buffer_get_text(tb, &s, &n, FALSE);
+  // printf("===> %s\n", text);
+
+  // bool x;
+  // gtk_text_buffer_get_iter_at_offset(tb, &s, 0);
+  // n = s;
+  // while(gtk_text_iter_forward_line(&n)) {
+  //   data = gtk_text_iter_get_text(&s, &n);
+  //   printf(">>>> %s\n", data);
+  //   free(data);
+  //   s = n;
+  // }
+  char *text;
+  if(is_multiline == TRUE) {
+    GtkTextIter s, n;
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textbox));
+    gtk_text_buffer_get_bounds(tb, &s, &n);
+    text = gtk_text_buffer_get_text(tb, &s, &n, FALSE);
+  } else {
+    text = (char *)gtk_entry_get_text(GTK_ENTRY(textbox));
+  }
+  return text;
+}
+
+// Get Switch value.
+int
+get_switch_value(GtkWidget *switchbox) {
+  if(gtk_switch_get_active(GTK_SWITCH(switchbox)) == TRUE)
+    return 1;
+  return 0;
+}
