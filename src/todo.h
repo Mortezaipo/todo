@@ -56,6 +56,13 @@ typedef struct {
   int id;
   char action[10]; //new, edit, delete
 } signal_data;
+typedef struct {
+  int id;
+  GtkWidget *title;
+  GtkWidget *description;
+  GtkWidget *is_done;
+  GtkWidget *is_important;
+} todo_items;
 GtkWidget *create_window(char *, int, int, GtkWidget *, bool, bool);
 GtkWidget *create_headerbar(char *, int, ...);
 GtkWidget *create_bigbutton(char *, char *);
@@ -63,6 +70,8 @@ GtkWidget *create_button(char *);
 GtkWidget *create_input(char *, char *, bool, int);
 GtkWidget *create_switchbox(bool);
 GtkWidget *create_label(char *text);
+char *get_entry_text(GtkWidget *, bool);
+int get_switch_value(GtkWidget *);
 
 //Windows
 void todo_window();

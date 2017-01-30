@@ -21,7 +21,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void
 save_todo(GtkWidget *btn, gpointer data) {
-  printf("ID: %d\n", 10);
+  todo_items *tmp_data = (todo_items *)data;
+  if (tmp_data->id > 0) {
+    //Update action // FIXME: not implemented
+    printf("update\n");
+  } else {
+    //Save action
+    insert_db(get_entry_text(tmp_data->title, FALSE), \
+              get_entry_text(tmp_data->description, TRUE), \
+              get_switch_value(tmp_data->is_done), \
+              get_switch_value(tmp_data->is_important));
+    // FIXME: not implemented ( create buttons )
+    // GtkWidget *btn = create_bigbutton(tmp_data->title, tmp_data->description);
+    // gtk_box_pack_start(GTK_BOX(tmp_data->parent->box), btn);
+    // gtk_widget_show_all(tmp_data->parent->box);
+  }
+  // printf("TITLE: %s\n", ((todo_data*)data)->title);
 }
 
 void
@@ -63,7 +78,6 @@ void todo_details_window(signal_data *sd) {
 
   GtkWidget *title = create_input("Todo Title", title_data, FALSE, 50);
   GtkWidget *description = create_input("Todo Description", description_data, TRUE, 1000);
-  //GtkWidget *input_description = gtk_text_view_get_buffer(description);
 
   // Switches for is_done & is_important items.
   GtkWidget *is_done_lbl = create_label("Is todo done?");
@@ -89,13 +103,20 @@ void todo_details_window(signal_data *sd) {
   gtk_box_pack_start(GTK_BOX(box), is_done_box, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(box), is_important_box, TRUE, TRUE, 1);
 
-  todo_data *input_data = malloc(sizeof(todo_data));
-  input_data->id = sd->id;
-  // input_data->title = gtk_entry_get_text(title);
-  //input_data->description = gtk_text_buffer_get_text(description_input);
-  input_data->is_done = gtk_switch_get_active(GTK_SWITCH(is_done));
-  input_data->is_important = gtk_switch_get_active(GTK_SWITCH(is_important));
-  g_signal_connect(save_btn, "clicked", G_CALLBACK(save_todo), input_data);
+  // todo_data *input_data = malloc(sizeof(todo_data));
+  // input_data->id = (sd != NULL)?sd->id:0;
+  // input_data->title = get_entry_text(title, FALSE);
+  // input_data->description = get_entry_text(description, TRUE);
+  // input_data->is_done = gtk_switch_get_active(GTK_SWITCH(is_done));
+  // input_data->is_important = gtk_switch_get_active(GTK_SWITCH(is_important));
+  todo_items *input_items = malloc(sizeof(todo_items));
+  input_items->id = (sd != NULL)?sd->id:0;
+  input_items->title = title;
+  input_items->description = description;
+  input_items->is_done = is_done;
+  input_items->is_important = is_important;
+
+  g_signal_connect(save_btn, "clicked", G_CALLBACK(save_todo), input_items);
 
   gtk_container_add(GTK_CONTAINER(window), box);
   gtk_widget_show_all(window);

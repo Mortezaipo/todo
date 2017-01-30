@@ -22,7 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void
 todo_details(GtkWidget *btn, gpointer sd) {
   //printf("%d\n", ((signal_data *)sd)->id);
-  todo_details_window((signal_data *)sd);
+  if (sd != NULL)
+    todo_details_window((signal_data *)sd);
+  else
+    todo_details_window(NULL);
 }
 
 void
