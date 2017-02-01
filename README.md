@@ -5,6 +5,15 @@ Developed in C and GTK+ 3.
 
 **Under Construction ....**
 
+##Features:
+* Todo management
+* Mark Todo as **Is Done** and **Is Important**
+* Support Gnome dark/light theme.
+* Choice color for Todo
+* Avoid to open several process
+* Each user has it's own Todo
+* Support staying open on tray icon part
+
 ##How to Contribute
 Please **create issues on Github** to report bugs, send feature requests and so on.
 If you've developed good git commits after forking FernSphex Todo on Github,
