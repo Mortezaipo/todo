@@ -1,4 +1,6 @@
 # Todo
+[![Build Status](https://travis-ci.org/fernsphex/todo.svg?branch=master)](https://travis-ci.org/fernsphex/todo)
+
 Todo Tracking Software
 
 Developed in C and GTK+ 3.
