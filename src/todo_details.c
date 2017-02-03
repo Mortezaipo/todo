@@ -109,13 +109,13 @@ void todo_details_window(signal_data *sd) {
   GtkWidget *is_done = create_switchbox(is_done_data);
   GtkWidget *is_important = create_switchbox(is_important_data);
 
-  gtk_label_set_xalign(GTK_LABEL(is_done_lbl), 0);
+  gtk_widget_set_halign(is_done_lbl, GTK_ALIGN_START);
   GtkWidget *is_done_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(is_done_box), FALSE);
   gtk_box_pack_start(GTK_BOX(is_done_box), is_done_lbl, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(is_done_box), is_done, FALSE, FALSE, 1);
 
-  gtk_label_set_xalign(GTK_LABEL(is_important_lbl), 0);
+  gtk_widget_set_halign(is_important_lbl, GTK_ALIGN_START);
   GtkWidget *is_important_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
   gtk_box_set_homogeneous(GTK_BOX(is_important_box), FALSE);
   gtk_box_pack_start(GTK_BOX(is_important_box), is_important_lbl, TRUE, TRUE, 1);

@@ -105,8 +105,8 @@ create_bigbutton(char *title, char *description, char *name) {
   gtk_widget_set_name(btn, name);
 
   gtk_label_set_markup(GTK_LABEL(title_lbl), markup_title);
-  gtk_label_set_xalign(GTK_LABEL(title_lbl), 0);
-  gtk_label_set_xalign(GTK_LABEL(description_lbl), 0);
+  gtk_widget_set_halign(title_lbl, GTK_ALIGN_START);
+  gtk_widget_set_halign(description_lbl, GTK_ALIGN_START);
 
   gtk_box_pack_start(GTK_BOX(box), title_lbl, TRUE, TRUE, 1);
   gtk_box_pack_start(GTK_BOX(box), description_lbl, TRUE, TRUE, 1);
