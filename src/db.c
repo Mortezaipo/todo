@@ -206,7 +206,6 @@ create_db() {
                      "description TEXT NOT NULL," \
                      "is_done INTEGER DEFAULT 0," \
                      "is_important INTEGER DEFAULT 0)";
-  printf("TEXT: %s\n", sql_query);
   if(sqlite3_exec(db, sql_query, NULL, 0, NULL) == SQLITE_OK)
     result = TRUE;
   else
