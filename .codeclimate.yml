@@ -1,4 +1,4 @@
-engine:
+engines:
   fixme: true
   exclude_fingerprints:
     - 3ee0c4d1248cb5cc71f2adf5f7f4e4b5
