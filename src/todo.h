@@ -30,10 +30,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sqlite3.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <pwd.h>
 
 //Libs
 char *home_dir();
+char *db_file();
+int is_file_empty(char *, bool);
 
 //Database
 typedef struct {
@@ -48,6 +51,9 @@ void close_db(sqlite3 *);
 int insert_db(char *, char *, int, int);
 todo_data **select_db(int);
 bool delete_db(int);
+bool update_db();
+bool create_db();
+void check_db();
 
 //Widgets
 typedef struct {

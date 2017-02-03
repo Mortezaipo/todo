@@ -23,9 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 sqlite3 *
 open_db() {
   sqlite3 *db;
-  char *db_file = malloc(strlen(home_dir()) + 19);
-  sprintf(db_file, "%s/fernsphex_todo.db", home_dir());
-  int connection = sqlite3_open(db_file, &db);
+  char *dbf = db_file();
+  int connection = sqlite3_open(dbf, &db);
   if (connection != SQLITE_OK)
     return NULL;
   return db;
@@ -36,6 +35,7 @@ void
 close_db(sqlite3 *db) {
   if(db != NULL)
     sqlite3_close(db);
+  // free(db);
 }
 
 // Add new data
@@ -187,4 +187,37 @@ delete_db(int todo_id) {
   sqlite3_finalize(stmt);
   close_db(db);
   return TRUE;
+}
+
+// Update a todo
+bool
+update_db() {
+
+}
+
+// Initial db
+bool
+create_db() {
+  sqlite3 *db = open_db();
+  bool result;
+  char sql_query[] = "CREATE TABLE todo (" \
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT," \
+                     "title CHAR(50) NOT NULL," \
+                     "description TEXT NOT NULL," \
+                     "is_done INTEGER DEFAULT 0," \
+                     "is_important INTEGER DEFAULT 0)";
+  printf("TEXT: %s\n", sql_query);
+  if(sqlite3_exec(db, sql_query, NULL, 0, NULL) == SQLITE_OK)
+    result = TRUE;
+  else
+    result = FALSE;
+  close_db(db);
+  return result;
+}
+
+// Check database and initialize
+void
+check_db() {
+  if(is_file_empty(db_file(), TRUE) > 0)
+    create_db();
 }
