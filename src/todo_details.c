@@ -23,7 +23,7 @@ void
 save_todo(GtkWidget *save_btn, gpointer data) {
   todo_items *tmp_data = (todo_items *)data;
   if (tmp_data->id > 0) {
-    //Update action // FIXME: not implemented
+    //Update action
     printf("update\n");
   } else {
     //Save action
