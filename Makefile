@@ -17,3 +17,7 @@ clean:
 
 test:
 	gcc -g $(TEST_FILES) tests/*.c $(CFLAGS) $(LDFLAGS) -o tests/test
+	tests/test
+
+get-deps:
+	sudo apt-get install -y gtk-3-dev libsqlite3-dev
