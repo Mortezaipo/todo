@@ -1,5 +1,8 @@
 # Todo
 [![Build Status](https://travis-ci.org/fernsphex/todo.svg?branch=master)](https://travis-ci.org/fernsphex/todo)
+[![Code Climate](https://codeclimate.com/github/fernsphex/todo/badges/gpa.svg)](https://codeclimate.com/github/fernsphex/todo)
+[![Test Coverage](https://codeclimate.com/github/fernsphex/todo/badges/coverage.svg)](https://codeclimate.com/github/fernsphex/todo/coverage)
+[![Issue Count](https://codeclimate.com/github/fernsphex/todo/badges/issue_count.svg)](https://codeclimate.com/github/fernsphex/todo)
 
 Todo Tracking Software
 
