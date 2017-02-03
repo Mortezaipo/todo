@@ -17,7 +17,7 @@ clean:
 	-rm -f bin/fernsphex-todo tests/test
 
 test:
-	gcc $(TEST_FILES) tests/*.c $(CFLAGS) $(LDFLAGS) -o tests/test $(CFLAGS_E)
+	gcc $(TEST_FILES) tests/*.c $(CFLAGS) $(LDFLAGS) -std=c99 -o tests/test $(CFLAGS_E)
 	tests/test
 
 get-deps:
