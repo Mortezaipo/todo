@@ -1,3 +1,4 @@
-before_install: make get-deps
+before_install:
+  - sudo apt-get install -y gtk-3-dev libsqlite3-dev
 language: c
 script: make test
