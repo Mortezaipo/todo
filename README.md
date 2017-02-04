@@ -3,6 +3,8 @@
 
 Todo Tracking Software
 
+![Screenshot](screenshot.png)
+
 Developed in C and GTK+ 3.
 
 **Under Construction ....**
