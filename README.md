@@ -4,7 +4,7 @@
 Todo Tracking Software
 
 <p align="center">
-![Screenshot](screenshot.png)
+    <img alt="Screenshot" src="screenshot.png">
 </p>
 
 Developed in C and GTK+ 3.
