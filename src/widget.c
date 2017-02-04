@@ -29,6 +29,8 @@ create_window(char *title, int width, int height, GtkWidget *header, bool enable
   gtk_window_set_title(GTK_WINDOW(window), title);
   gtk_window_set_default_size(GTK_WINDOW(window), width, height);
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+  if(is_parent == FALSE)
+    gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);
 
   if (is_parent == TRUE) {
     gtk_window_set_default_icon_from_file("todo.png", NULL);
@@ -162,9 +164,16 @@ create_switchbox(bool is_active) {
 
 // Create Label widget.
 GtkWidget *
-create_label(char *text) {
+create_label(char *text, bool is_title) {
   GtkWidget *label;
-  label = gtk_label_new(text);
+  label = gtk_label_new(NULL);
+  if (is_title == TRUE) {
+    char *tmp_title = malloc(sizeof(char *) * strlen(text) + 18);
+    sprintf(tmp_title, "<big><b>%s</b></big>", text);
+    gtk_label_set_markup(GTK_LABEL(label), tmp_title);
+  } else {
+    gtk_label_set_text(GTK_LABEL(label), text);
+  }
   return label;
 }
 
@@ -172,8 +181,7 @@ create_label(char *text) {
 GtkWidget *
 create_alert(char *title, char *description, char *name) {
   GtkWidget *t_label = gtk_label_new(NULL);
-  char *tmp_text = malloc((sizeof(char) * strlen(title)) + 18);
-  sprintf(tmp_text, "<big><b>%s</b></big>", title);
+  char *tmp_text = create_title_text(title);
   gtk_label_set_markup(GTK_LABEL(t_label), tmp_text);
 
   GtkWidget *d_label = gtk_label_new(description);

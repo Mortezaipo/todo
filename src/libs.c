@@ -53,3 +53,11 @@ is_file_empty(char *f_path, bool create_it) {
   }
   return 0;
 }
+
+// Generate title text
+char *
+create_title_text(char *title) {
+  char *tmp_title = malloc(sizeof(char *) * strlen(title) + 18);
+  sprintf(tmp_title, "<big><b>%s</b></big>", title);
+  return tmp_title;
+}

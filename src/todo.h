@@ -37,6 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 char *home_dir();
 char *db_file();
 int is_file_empty(char *, bool);
+char *create_title_text(char *);
 
 //Database
 typedef struct {
@@ -52,6 +53,7 @@ int insert_db(char *, char *, int, int);
 todo_data **select_db(int);
 bool delete_db(int);
 bool update_db();
+bool update_db(int, char *, char *, int, int);
 bool create_db();
 void check_db();
 
@@ -64,6 +66,7 @@ typedef struct {
 } signal_data;
 typedef struct {
   int id;
+  GtkWidget *btn;
   GtkWidget *refresh_box;
   GtkWidget *title;
   GtkWidget *description;
@@ -76,7 +79,7 @@ GtkWidget *create_bigbutton(char *, char *, char *);
 GtkWidget *create_button(char *, char *);
 GtkWidget *create_input(char *, char *, bool, int, char *);
 GtkWidget *create_switchbox(bool);
-GtkWidget *create_label(char *text);
+GtkWidget *create_label(char *, bool);
 GtkWidget *create_alert(char *, char *, char *);
 char *get_entry_text(GtkWidget *, bool);
 int get_switch_value(GtkWidget *);

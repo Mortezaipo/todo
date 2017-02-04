@@ -191,8 +191,47 @@ delete_db(int todo_id) {
 
 // Update a todo
 bool
-update_db() {
+update_db(int id, char *title, char *description, int is_done, int is_important) {
+  sqlite3 *db = open_db();
+  sqlite3_stmt *res;
+  bool result;
+  char *sql_query = "UPDATE todo SET title=?, description=?, is_done=?, is_important=? WHERE id=?";
 
+  if(sqlite3_prepare_v2(db, sql_query, -1, &res, NULL) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+
+  if(sqlite3_bind_text(res, 1, title, strlen(title), NULL) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+  if(sqlite3_bind_text(res, 2, description, strlen(description), NULL) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+  if(sqlite3_bind_int(res, 3, is_done) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+  if(sqlite3_bind_int(res, 4, is_important) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+  if(sqlite3_bind_int(res, 5, id) != SQLITE_OK) {
+    close_db(db);
+    return FALSE;
+  }
+
+  if(sqlite3_step(res) != SQLITE_DONE) {
+    fprintf(stderr, "ERROR ON INSERT! %s", sqlite3_errmsg(db));
+    close_db(db);
+    return FALSE;
+  }
+
+  sqlite3_finalize(res);
+  close_db(db);
+  return TRUE;
 }
 
 // Initial db

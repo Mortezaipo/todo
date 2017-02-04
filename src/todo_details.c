@@ -22,17 +22,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void
 save_todo(GtkWidget *save_btn, gpointer data) {
   todo_items *tmp_data = (todo_items *)data;
+  char *title = get_entry_text(tmp_data->title, FALSE);
+  char *description = get_entry_text(tmp_data->description, TRUE);
   if (tmp_data->id > 0) {
     //Update action
-    printf("update\n");
+    update_db(tmp_data->id, title, description,
+              get_switch_value(tmp_data->is_done),
+              get_switch_value(tmp_data->is_important));
+    if(tmp_data->btn != NULL) {
+      GList *box = gtk_container_get_children(GTK_CONTAINER(tmp_data->btn));
+      GList *lbls = gtk_container_get_children(GTK_CONTAINER(box->data));
+      gtk_label_set_markup(GTK_LABEL(lbls->data), create_title_text(title));
+      lbls = g_list_next(lbls);
+      gtk_label_set_text(GTK_LABEL(lbls->data), description);
+    }
   } else {
     //Save action
     signal_data *sd = malloc(sizeof(signal_data));
     sd->box = tmp_data->refresh_box;
     strcpy(sd->action, "edit");
 
-    sd->id = insert_db(get_entry_text(tmp_data->title, FALSE), \
-                       get_entry_text(tmp_data->description, TRUE), \
+    sd->id = insert_db(title, description, \
                        get_switch_value(tmp_data->is_done), \
                        get_switch_value(tmp_data->is_important));
 
@@ -49,14 +59,13 @@ save_todo(GtkWidget *save_btn, gpointer data) {
       // if(sd->box != NULL) {
       //   gtk_widget_destroy(no_todo_alert);
       // }
-
-      GtkWidget *window = gtk_widget_get_toplevel(save_btn);
-      if(gtk_widget_is_toplevel(window)) {
-        gtk_widget_destroy(window);
-      }
     }
-    free(tmp_data);
   }
+  GtkWidget *window = gtk_widget_get_toplevel(save_btn);
+  if(gtk_widget_is_toplevel(window)) {
+    gtk_widget_destroy(window);
+  }
+  free(tmp_data);
 }
 
 void
@@ -104,8 +113,8 @@ void todo_details_window(signal_data *sd) {
   GtkWidget *description = create_input("Todo Description", description_data, TRUE, 1000, "textarea_normal");
 
   // Switches for is_done & is_important items.
-  GtkWidget *is_done_lbl = create_label("Is todo done?");
-  GtkWidget *is_important_lbl = create_label("Is todo important?");
+  GtkWidget *is_done_lbl = create_label("Is todo done?", FALSE);
+  GtkWidget *is_important_lbl = create_label("Is todo important?", FALSE);
   GtkWidget *is_done = create_switchbox(is_done_data);
   GtkWidget *is_important = create_switchbox(is_important_data);
 
@@ -128,13 +137,13 @@ void todo_details_window(signal_data *sd) {
   gtk_box_pack_start(GTK_BOX(box), is_important_box, TRUE, TRUE, 1);
 
   todo_items *input_items = malloc(sizeof(todo_items));
-  input_items->id = (sd->id == 0)?sd->id:0;
+  input_items->id = (sd->id != 0)?sd->id:0;
   input_items->title = title;
   input_items->description = description;
   input_items->is_done = is_done;
   input_items->is_important = is_important;
+  input_items->btn = (sd->id != 0)?sd->btn:NULL;
   input_items->refresh_box = sd->box;
-
   g_signal_connect(save_btn, "clicked", G_CALLBACK(save_todo), input_items);
 
   gtk_container_add(GTK_CONTAINER(window), box);
