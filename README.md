@@ -3,7 +3,9 @@
 
 Todo Tracking Software
 
+<p align="center">
 ![Screenshot](screenshot.png)
+</p>
 
 Developed in C and GTK+ 3.
 
