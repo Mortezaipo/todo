@@ -12,13 +12,18 @@ Developed in C and GTK+ 3.
 **Under Construction ....**
 
 ##Features:
-* Todo management
-* Mark Todo as **Is Done** and **Is Important**
-* Support Gnome dark/light theme.
-* Choice color for Todo
-* Avoid to open several process
-* Each user has it's own Todo
-* Support staying open on tray icon part
+| Feature | Version | Status |
+| --- | --- | --- |
+| Todo management                | 1.0 | [x] |
+| Support multi user             | 1.0 | [x] |
+| Mark todo as Done or Important | 1.0 | [x] |
+| Choice a color for todo        | 1.0 | [ ] |
+| Support rich text              | 1.0 | [ ] |
+| Support i18n                   | 1.0 | [ ] |
+| Support tray icon              | 1.0 | [ ] |
+| Support Gnome dark/light theme  | 1.0 | [ ] |
+| Avoid to open several process  | 1.0 | [ ] |
+| Linux packages                 | all | [ ] |
 
 ##How to Contribute
 Please **create issues on Github** to report bugs, send feature requests and so on.
