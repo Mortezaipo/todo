@@ -14,16 +14,16 @@ Developed in C and GTK+ 3.
 ##Features:
 | Feature | Version | Status |
 | --- | --- | --- |
-| Todo management                | 1.0 | <ul><li> [x] </li></ul> |
-| Support multi user             | 1.0 | <ul><li> [x] </li></ul> |
-| Mark todo as Done or Important | 1.0 | <ul><li> [x] </li></ul> |
-| Choice a color for todo        | 1.0 | <ul><li> [ ] </li></ul> |
-| Support rich text              | 1.0 | <ul><li> [ ] </li></ul> |
-| Support i18n                   | 1.0 | <ul><li> [ ] </li></ul> |
-| Support tray icon              | 1.0 | <ul><li> [ ] </li></ul> |
-| Support Gnome dark/light theme | 1.0 | <ul><li> [ ] </li></ul> |
-| Avoid to open several process  | 1.0 | <ul><li> [ ] </li></ul> |
-| Linux packages                 | all | <ul><li> [ ] </li></ul> |
+| Todo management                | 1.0 | Done           |
+| Support multi user             | 1.0 | Done           |
+| Mark todo as Done or Important | 1.0 | Done           |
+| Choice a color for todo        | 1.0 | In Development |
+| Support rich text              | 1.0 | In Development |
+| Support i18n                   | 1.0 | In Development |
+| Support tray icon              | 1.0 | In Development |
+| Support Gnome dark/light theme | 1.0 | In Development |
+| Avoid to open several process  | 1.0 | In Development |
+| Linux packages                 | all | In Development |
 
 ##How to Contribute
 Please **create issues on Github** to report bugs, send feature requests and so on.
