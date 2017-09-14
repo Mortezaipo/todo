@@ -1,5 +1,5 @@
 # Todo
-[![Build Status](https://travis-ci.org/fernsphex/todo.svg?branch=master)](https://travis-ci.org/fernsphex/todo)
+[![Build Status](https://travis-ci.org/mortezaipo/todo.svg?branch=master)](https://travis-ci.org/mortezaipo/todo)
 
 Todo Tracking Software
 
