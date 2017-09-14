@@ -3,7 +3,7 @@
 
 Todo Tracking Software
 
-**This project is unmaintained. Find new version at here: [MTodo](https://github.com/mortezaipo/MTodo)**
+**This project marked as unmaintained. Pleae find new version at: [MTodo](https://github.com/mortezaipo/MTodo)**
 
 <p align="center">
     <img alt="Screenshot" src="screenshot.png">
