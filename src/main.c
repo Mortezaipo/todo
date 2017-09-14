@@ -1,6 +1,6 @@
 /* ============================================================
-                      FernSphex Todo
-                    Todo Tracking Software
+                          Todo
+                  Todo Tracking Software
 Copyright (C) 2016  Morteza Nourelahi Alamdari (Mortezaipo)
 
 This program is free software: you can redistribute it and/or modify

@@ -1,5 +1,5 @@
 /* ============================================================
-                      FernSphex Todo
+                          Todo
                   Todo Tracking Software
 Copyright (C) 2016  Morteza Nourelahi Alamdari (Mortezaipo)
 
@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ============================================================ */
-//FernSphex Todo Extra Library.
+//Todo Extra Library.
 #include "todo.h"
 
 // Find user home address
@@ -28,7 +28,7 @@ char *home_dir() {
 // Database file
 char *db_file() {
   char *db_file = malloc(strlen(home_dir()) + 19);
-  sprintf(db_file, "%s/.fernsphex_todo.db", home_dir());
+  sprintf(db_file, "%s/.todo.db", home_dir());
   return db_file;
 }
 

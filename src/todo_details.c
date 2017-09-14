@@ -1,5 +1,5 @@
 /* ============================================================
-                      FernSphex Todo
+                          Todo
                   Todo Tracking Software
 Copyright (C) 2016  Morteza Nourelahi Alamdari (Mortezaipo)
 

@@ -33,5 +33,5 @@
 *.su
 
 # Compiled files
-bin/fernsphex-todo
+bin/todo
 tests/test

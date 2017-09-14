@@ -1,5 +1,5 @@
 /* ============================================================
-                      FernSphex Todo
+                          Todo
                   Todo Tracking Software
 Copyright (C) 2016  Morteza Nourelahi Alamdari (Mortezaipo)
 
@@ -16,9 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ============================================================ */
-//FernSphex Todo Header File.
-#ifndef _FERNSPHEX_TODO_HEADER
-#define _FERNSPHEX_TODO_HEADER
+//Todo Header File.
+#ifndef _TODO_HEADER
+#define _TODO_HEADER
 
 //Headers
 #include <gtk/gtk.h>
